@@ -10,9 +10,7 @@ import UIKit
 class IronicCell: UICollectionViewCell {
     
     static let identifier = String(describing: IronicCell.self)
-    
-    let containerView = UIView()
-    
+        
     let contentTitleLabel: UILabel = {
         let label = UILabel()
         label.backgroundColor = .clear
@@ -37,18 +35,17 @@ class IronicCell: UICollectionViewCell {
     
     let stackView = UIStackView()
     
+    lazy var widthConstraint: NSLayoutConstraint = {
+        let width = contentView.widthAnchor.constraint(equalToConstant: bounds.size.width)
+        width.isActive = true
+        return width
+    }()
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-
-        containerView.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        containerView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0).isActive = true
-        containerView.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-        containerView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 0).isActive = true
-        containerView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width - 40).isActive = true
-
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        
         stackView.addArrangedSubview(contentTitleLabel)
         stackView.addArrangedSubview(contentDescriptionLabel)
         stackView.alignment = .fill
@@ -56,16 +53,18 @@ class IronicCell: UICollectionViewCell {
         stackView.distribution = .fillProportionally
         stackView.spacing = 10
         
-        containerView.addSubview(stackView)
+        contentView.addSubview(stackView)
         stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.topAnchor.constraint(equalTo: containerView.topAnchor).isActive = true
-        stackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor).isActive = true
-        stackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor).isActive = true
-        stackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor).isActive = true
-        
+        stackView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 20).isActive = true
+        stackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20).isActive = true
+        stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -20).isActive = true
+        stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20).isActive = true
     }
     
-    
+    override func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
+        widthConstraint.constant = bounds.size.width
+        return contentView.systemLayoutSizeFitting(CGSize(width: targetSize.width, height: 1))
+    }
     
     
     required init?(coder: NSCoder) {
@@ -74,7 +73,6 @@ class IronicCell: UICollectionViewCell {
     
     func setup(with content: Content) {
 
-        containerView.backgroundColor = UIColor(red: 0.93, green: 0.81, blue: 0.68, alpha: 1.00)
         contentTitleLabel.textColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.00)
         contentDescriptionLabel.textColor = UIColor(red: 0.15, green: 0.15, blue: 0.15, alpha: 1.00)
         contentTitleLabel.text = "A Section"

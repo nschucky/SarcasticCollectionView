@@ -17,13 +17,11 @@ class StrategyViewController: UICollectionViewController {
     
     var content: [Content] = []
     
-    let layout: UICollectionViewFlowLayout
     init() {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumLineSpacing = 20
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
-        self.layout = layout
+        let width = UIScreen.main.bounds.size.width
+        layout.estimatedItemSize = CGSize(width: width, height: 0)
         super.init(collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
